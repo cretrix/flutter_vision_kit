@@ -28,7 +28,7 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
                 case .success(images: let images):
                     self.saveImaged(images: images, result: result)
                 case .canceled:
-                    result(nil)
+                    result([])
                 }
             case .failure(let error):
                 result(FlutterError(code: "code", message: error.localizedDescription, details: nil))
