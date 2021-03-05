@@ -10,6 +10,13 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let args = call.arguments as? Dictionary<String, Any>
+        let simulatorImagePath = args?["simulatorImagePath"] as? String
+
+        guard simulatorImagePath != nil else { result([]); return  }
+
+        let appImagesPath: String! = simulatorImagePath
+        
         if (call.method != "pickDocument"){
             result(FlutterError(code: "not_implemented", message: "\(call.method) is not implemented", details: nil))
             return
@@ -26,7 +33,7 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
             case .success(let pickerResult):
                 switch pickerResult {
                 case .success(images: let images):
-                    self.saveImaged(images: images, result: result)
+                    self.saveImaged(images: images, appImagesPath: appImagesPath, result: result)
                 case .canceled:
                     result([])
                 }
@@ -36,9 +43,10 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
         }
         #endif
     }
-    private func saveImaged(images:[UIImage], result: @escaping FlutterResult){
+    private func saveImaged(images:[UIImage], appImagesPath: String, result: @escaping FlutterResult){
         DispatchQueue.global(qos: .userInitiated).async {
-            let tempDirUrl = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            // let tempDirUrl = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            let tempDirUrl = NSURL(fileURLWithPath: appImagesPath, isDirectory: true)
 
             var imagePaths:[String] = []
             for image in images {
