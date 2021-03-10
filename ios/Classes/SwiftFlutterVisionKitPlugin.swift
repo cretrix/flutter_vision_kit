@@ -44,14 +44,14 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
         #endif
     }
     private func saveImaged(images:[UIImage], appImagesPath: String, result: @escaping FlutterResult){
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .userInteractive).async {
             // let tempDirUrl = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
             let tempDirUrl = NSURL(fileURLWithPath: appImagesPath, isDirectory: true)
 
             var imagePaths:[String] = []
             for image in images {
                 let uuid = UUID().uuidString
-                if let data = image.pngData(), let tempFileURL = tempDirUrl.appendingPathComponent("vision_kit_\(uuid).png"){
+                if let data = image.jpegData(), let tempFileURL = tempDirUrl.appendingPathComponent("vision_kit_\(uuid).jpg"){
                     do{
                         try data.write(to: tempFileURL)
                         imagePaths.append(tempFileURL.absoluteString)
@@ -61,9 +61,9 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
 
                 }
             }
-            DispatchQueue.main.async {
-                result(imagePaths)
-            }
+            // DispatchQueue.main.async {
+            //     result(imagePaths)
+            // }
             result(imagePaths)
         }
     }
