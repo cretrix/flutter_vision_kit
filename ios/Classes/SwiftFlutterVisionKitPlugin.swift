@@ -51,7 +51,7 @@ public class SwiftFlutterVisionKitPlugin: NSObject, FlutterPlugin {
             var imagePaths:[String] = []
             for image in images {
                 let uuid = UUID().uuidString
-                if let data = image.jpegData(), let tempFileURL = tempDirUrl.appendingPathComponent("vision_kit_\(uuid).jpg"){
+                if let data = image.jpegData(compressionQuality: 1.0), let tempFileURL = tempDirUrl.appendingPathComponent("vision_kit_\(uuid).jpg"){
                     do{
                         try data.write(to: tempFileURL)
                         imagePaths.append(tempFileURL.absoluteString)
